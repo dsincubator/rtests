@@ -48,105 +48,49 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="rtests">rtests<a class="anchor" aria-label="anchor" href="#rtests"></a>
 </h1></div>
-<!-- badges: start -->
-
-<p>The goal of rtests is to show by example how to test R code with testthat, with a focus on testing models.</p>
-<details><summary>
-Syllabus
-</summary></details>
-</div>
-<div class="section level1">
-<h1 id="series-title">Series Title<a class="anchor" aria-label="anchor" href="#series-title"></a>
-</h1>
-<p>The goal of this series is …</p>
-<p>At the end of this series, you will know how to do things like:</p>
+<p>This meetup overviews writing tests in R, as part of the package development workflow.</p>
+<p><img src="https://github.com/user-attachments/assets/bdab4d90-c1f0-4bfc-89d5-749b976cf466" width="500"></p>
+<p><a href="https://r-pkgs.org/whole-game.html#review" class="external-link uri">https://r-pkgs.org/whole-game.html#review</a></p>
+<div class="section level2">
+<h2 id="importance">Importance<a class="anchor" aria-label="anchor" href="#importance"></a>
+</h2>
 <ul>
-<li>…</li>
-<li>…</li>
-</ul>
-<div class="section level2">
-<h2 id="who-is-the-audience">Who is the audience?<a class="anchor" aria-label="anchor" href="#who-is-the-audience"></a>
-</h2>
-<p>…</p>
-</div>
-<div class="section level2">
-<h2 id="why-is-it-important">Why is it important?<a class="anchor" aria-label="anchor" href="#why-is-it-important"></a>
-</h2>
-<p>…</p>
-</div>
-<div class="section level2">
-<h2 id="program-tentative">Program (tentative)<a class="anchor" aria-label="anchor" href="#program-tentative"></a>
-</h2>
-<div class="section level3">
-<h3 id="meeting-1-introduction">Meeting 1: Introduction<a class="anchor" aria-label="anchor" href="#meeting-1-introduction"></a>
-</h3>
-<p>This meeting will help you understand the most important aspects of this topic, and you can decide whether to attend the following meetings to dive deeper into the subject.</p>
-<p>Objectives:</p>
-<ul>
-<li>…</li>
-<li>…</li>
+<li>Good tests make your code more reliable and easier to maintain.<br>
+</li>
+<li>Writing tests is easiest when you use the structure of an R package, and the tools designed to build R packages.</li>
 </ul>
 </div>
-<div class="section level3">
-<h3 id="meeting-2-">Meeting 2: …<a class="anchor" aria-label="anchor" href="#meeting-2-"></a>
-</h3>
-<p>This meeting will help you …</p>
-<p>Objectives:</p>
+<div class="section level2">
+<h2 id="audience">Audience<a class="anchor" aria-label="anchor" href="#audience"></a>
+</h2>
+<p>Data scientists with some experience writing R code and functions but little or no experience writing tests in R packages.</p>
+</div>
+<div class="section level2">
+<h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
+</h2>
 <ul>
-<li>…</li>
-<li>…</li>
+<li>Build the R packages infrastructure.</li>
+<li>Create simpler version of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</li>
+<li>Setup CI/CD.</li>
+<li>Report coverage.</li>
+<li>Test Driven Development (TDD).</li>
 </ul>
 </div>
+<div class="section level2">
+<h2 id="demo">Demo<a class="anchor" aria-label="anchor" href="#demo"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu">create_package</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">usethis</span><span class="fu">::</span><span class="fu">create_upkeep_issue</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
 </h2>
 <ul>
-<li>
-<a href="https://github.com/ixpanteria" class="external-link">About the ixpanteria project</a>.</li>
-<li>
-<a href="FIXME">YouTube playlist with videos in the entire project</a>.</li>
-<li>
-<a href="FIXME">YouTube playlist with videos in this specific series</a>.</li>
-<li>
-<a href="FIXME">Main resource used to develop this series</a>.</li>
-<li>…</li>
+<li>Tidyverse design principles</li>
 </ul>
-<hr>
-</div>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
-<p>You can install the development version of rtests from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"dsincubator/rtests"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dsincubator/rtests" class="external-link">rtests</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
-<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="va">x</span></span>
-<span></span>
-<span><span class="co"># Minimal version of `lm()`</span></span>
-<span><span class="fu"><a href="reference/linear_model.html">linear_model</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt; lm(formula = formula)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Coefficients:</span></span>
-<span><span class="co">#&gt; (Intercept)            x  </span></span>
-<span><span class="co">#&gt;           0            2</span></span>
-<span></span>
-<span><span class="co"># Fails. The only valid argument is `formula`</span></span>
-<span><span class="fu"><a href="reference/linear_model.html">linear_model</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in linear_model(y ~ x, data = mtcars): unused argument (data = mtcars)</span></span></code></pre></div>
 </div>
 </div>
-
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
@@ -184,12 +128,7 @@ Syllabus
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/dsincubator/rtests/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/dsincubator/rtests/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-</ul>
-</div>
+
 
   </aside>
 </div>
