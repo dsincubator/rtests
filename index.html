@@ -69,9 +69,10 @@
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
 </h2>
 <ul>
-<li>Build the R packages infrastructure.</li>
-<li>Create simpler version of <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</li>
-<li>Setup CI/CD.</li>
+<li>Infrastructure: Set up an R package and the infrastructure for tests.</li>
+<li>Anathomy: Notice the components of a test.</li>
+<li>Structure: Understand how to organize tests.</li>
+<li>Workflow: Run tests in multiple ways</li>
 <li>Report coverage.</li>
 <li>Test Driven Development (TDD).</li>
 </ul>
@@ -79,9 +80,68 @@
 <div class="section level2">
 <h2 id="demo">Demo<a class="anchor" aria-label="anchor" href="#demo"></a>
 </h2>
+<div class="section level3">
+<h3 id="infrastructure">Infrastructure<a class="anchor" aria-label="anchor" href="#infrastructure"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu">create_package</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">usethis</span><span class="fu">::</span><span class="fu">create_upkeep_issue</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="anathomy">Anathomy<a class="anchor" aria-label="anchor" href="#anathomy"></a>
+</h3>
+<pre><code><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"as.vector() strips names"</span>, <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre>
+<blockquote>
+<p>A test starts by declaring the intent (“as.vector() strips names”) then uses regular R code to generate some test data. The test data is then compared to the expected result using a expectation, a function that starts with expect_. The first argument is some code to run, and the second argument describes the expected result: here we verify that the output of as.vector(x) equals c(1, 2). – <a href="https://mastering-shiny.org/scaling-testing.html" class="external-link uri">https://mastering-shiny.org/scaling-testing.html</a></p>
+</blockquote>
+</div>
+<div class="section level3">
+<h3 id="basic-structure">
+<a href="https://mastering-shiny.org/scaling-testing.html#basic-structure" class="external-link">Basic structure</a><a class="anchor" aria-label="anchor" href="#basic-structure"></a>
+</h3>
+<p>File, test, expectation.</p>
+</div>
+<div class="section level3">
+<h3 id="basic-workflow">
+<a href="https://mastering-shiny.org/scaling-testing.html#basic-workflow" class="external-link">Basic workflow</a><a class="anchor" aria-label="anchor" href="#basic-workflow"></a>
+</h3>
+<p>In R/load_file.R</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">load_file</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">name</span>, <span class="va">path</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">ext</span> <span class="op">&lt;-</span> <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/fileutils.html" class="external-link">file_ext</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/switch.html" class="external-link">switch</a></span><span class="op">(</span><span class="va">ext</span>,</span>
+<span>    csv <span class="op">=</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu">vroom</span><span class="op">(</span><span class="va">path</span>, delim <span class="op">=</span> <span class="st">","</span>, col_types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    tsv <span class="op">=</span> <span class="fu">vroom</span><span class="fu">::</span><span class="fu">vroom</span><span class="op">(</span><span class="va">path</span>, delim <span class="op">=</span> <span class="st">"\t"</span>, col_types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu">validate</span><span class="op">(</span><span class="st">"Invalid file; Please upload a .csv or .tsv file"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>In tests/testthat/tests/test-load_file.R</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"load_file() handles all input types"</span>, <span class="op">{</span></span>
+<span>  <span class="co"># Create sample data</span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, y <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="va">path_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="va">path_tsv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">path_csv</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">path_tsv</span>, sep <span class="op">=</span> <span class="st">"\t"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">load_file</span><span class="op">(</span><span class="st">"test.csv"</span>, <span class="va">path_csv</span><span class="op">)</span>, <span class="va">df</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">load_file</span><span class="op">(</span><span class="st">"test.tsv"</span>, <span class="va">path_tsv</span><span class="op">)</span>, <span class="va">df</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_error</span><span class="op">(</span><span class="fu">load_file</span><span class="op">(</span><span class="st">"blah"</span>, <span class="va">path_csv</span><span class="op">)</span>, <span class="st">"Invalid file"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<p>Different ways to run tests:</p>
+<ul>
+<li>Interactively, line by line.</li>
+<li>Whole test block.</li>
+<li>Whole test: <code>devtools::test_file()</code>
+</li>
+<li>Whole package: <code>devtools::test()</code>
+</li>
+</ul>
+</div>
 </div>
 <div class="section level2">
 <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
