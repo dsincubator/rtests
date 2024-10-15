@@ -85,6 +85,8 @@ test_that("does what you expect", {
 
 * [Keyboard shrotcuts](https://mastering-shiny.org/scaling-testing.html#keyboard-shortcuts)
 
+* [Workflow summary](https://mastering-shiny.org/scaling-testing.html#workflow-summary)
+
 ## Resources 
 
 - Tidyverse design principles
