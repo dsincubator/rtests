@@ -83,10 +83,10 @@ test_that("load_file() handles all input types", {
 
 Different ways to run tests:
 
-* Interactively, line by line.
-* Whole test block.
-* Whole test: `devtools::test_file()`
-* Whole package: `devtools::test()`
+* Interactively: Ctrl/Cmd + Enter line by line.
+* Whole test block: Ctrl/Cmd + Enter on `test_that( ...`.
+* Whole test: `devtools::test_file()` or shortcut.
+* Whole package: `devtools::test()` or shortcut.
 
 
 ## Resources 
